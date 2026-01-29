@@ -14,7 +14,7 @@ def get_member_info(member_id: int):
         (member_id,),
     )
 
-
+#누적 포인트 계산
 def get_member_points(member_id: int) -> int:
     row = fetch_one(
         "SELECT COALESCE(SUM(포인트),0) AS total FROM 포인트 WHERE 회원_id=%s",
@@ -22,7 +22,7 @@ def get_member_points(member_id: int) -> int:
     )
     return int(row["total"]) if row else 0
 
-
+#포인트 적립
 def add_points(member_id: int, points: int, kind="적립"):
     execute(
         """
@@ -32,7 +32,7 @@ def add_points(member_id: int, points: int, kind="적립"):
         (member_id, kind, int(points)),
     )
 
-
+#등급 찾고, 최신화
 def recalc_member_grade(member_id: int):
     total = get_member_points(member_id)
 

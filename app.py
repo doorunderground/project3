@@ -10,24 +10,29 @@ from price import calc_final
 
 
 
-# ✅ DB 연결
 
-# ============================================================
-# Business Logic
-# ============================================================
+#############################################
+#    DB :  "문지하  " 
+#   입력:  "문지하"
+#   "문지하 " == "문지하"   ->  False
+##############################################
 def clean_name(s: str) -> str:
     if s is None:
         return ""
     return str(s).replace("\u00A0", " ").strip()
 
-# ============================================================
-# UI helpers
-# ============================================================
+
+# 로그인 안 했으면 이 페이지에서 더 이상 실행하지 마라
 def ensure_member():
     if not st.session_state.member_id:
         st.error("먼저 메인 화면에서 회원 인증을 해주세요.")
         st.stop()
 
+##############################################
+#┌──────┬──────────────┬──────┐
+#│ 메인 │   회원정보    │ 로그 │
+#└──────┴──────────────┴──────┘
+##############################################
 def top_bar():
     c1, c2, c3 = st.columns([1.2, 2.8, 1.2])
     with c1:
@@ -51,8 +56,9 @@ def top_bar():
             st.session_state.page = "HOME"
             st.rerun()
 
+
 # ============================================================
-# App start
+# start
 # ============================================================
 st.set_page_config(page_title="PC방 주문 시스템", layout="centered")
 
@@ -64,7 +70,7 @@ if "member_id" not in st.session_state:
 st.title("PC방 메인 화면")
 
 # ============================================================
-# HOME: 회원번호+이름 확인 후 이동
+# HOME: 회원번호 + 이름 확인
 # ============================================================
 if st.session_state.page == "HOME":
     st.subheader("1) 회원 정보 입력 (회원번호 + 이름 확인)")
@@ -88,7 +94,6 @@ if st.session_state.page == "HOME":
                 pts = get_member_points(st.session_state.member_id)
                 rate = info.get("할인율") or 0
                 rate_percent = rate if rate <= 1 else rate / 100
-
 
                 st.success("회원 정보 확인 완료 ✅")
                 st.info(
@@ -362,7 +367,7 @@ if st.session_state.page == "STAFF":
 
     memo = st.text_input(
         "메모(선택)",
-        placeholder="예: 3번 PC로 배달 / 재고 부족 등"
+        placeholder="예: 재고 부족 / 계란 (완숙) 등"
     )
     
     if st.button("상태 업데이트", type="primary"):

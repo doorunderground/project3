@@ -1,4 +1,5 @@
 # db.py
+# ✅ DB 연결
 import pymysql
 
 DB_HOST = "127.0.0.1"

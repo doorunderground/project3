@@ -13,6 +13,7 @@ def create_package_order(member_id, package_id, final_price):
                 """,
                 (member_id, package_id, final_price),
             )
+            # PK값을 가져옴
             pk_id = cur.lastrowid
 
             cur.execute(
